@@ -27,7 +27,7 @@ class Pages extends React.Component {
         <div className={classes.wrapper} ref="wrapper">
           <div
             className={classes.fullPage}
-            style={{ backgroundImage: "url(" + bgImage + ")" }}
+            style={{ backgroundImage: "url(" + bgImage + ")", backgroundRepeat:'no-repeat', backgroundSize:'cover'}}
           >
             <Switch>
               {pagesRoutes.map((prop, key) => {

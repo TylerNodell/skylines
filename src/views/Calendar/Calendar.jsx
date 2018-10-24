@@ -85,29 +85,10 @@ class Calendar extends React.Component {
       <div>
         <Heading
           textAlign="center"
-          title="React Big Calendar"
-          category={
-            <span>
-              A beautiful react component made by{" "}
-              <a
-                href="https://github.com/intljusticemission"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                International Justice Mission
-              </a>. Please checkout their{" "}
-              <a
-                href="https://github.com/intljusticemission/react-big-calendar"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                full documentation.
-              </a>
-            </span>
-          }
+          title="Skylines Calendar"
         />
         {this.state.alert}
-        <GridContainer justify="center">
+        <GridContainer height="100%" justify="center">
           <GridItem xs={12} sm={12} md={10}>
             <Card>
               <CardBody calendar>

@@ -2,6 +2,7 @@ import PricingPage from "views/Pages/PricingPage.jsx";
 import LoginPage from "views/Pages/LoginPage.jsx";
 import RegisterPage from "views/Pages/RegisterPage.jsx";
 import LockScreenPage from "views/Pages/LockScreenPage.jsx";
+import DisplayPage from "views/Pages/DisplayPage.jsx"
 
 // @material-ui/icons
 import PersonAdd from "@material-ui/icons/PersonAdd";
@@ -11,12 +12,11 @@ import LockOpen from "@material-ui/icons/LockOpen";
 
 const pagesRoutes = [
   {
-    path: "/pages/register-page",
-    name: "Register Page",
-    short: "Register",
-    mini: "RP",
-    icon: PersonAdd,
-    component: RegisterPage
+    path: "/pages/jchang",
+    name: "Display Page",
+    short: "Display",
+    mini: "DP",
+    component: DisplayPage
   },
   {
     path: "/pages/login",
@@ -45,8 +45,8 @@ const pagesRoutes = [
   {
     redirect: true,
     path: "/pages",
-    pathTo: "/pages/register-page",
-    name: "Register Page"
+    pathTo: "/pages/login",
+    name: "Login"
   }
 ];
 

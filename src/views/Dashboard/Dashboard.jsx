@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import update from 'react-addons-update';
 // react plugin for creating charts
 
 // @material-ui/core components
@@ -30,11 +31,12 @@ import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashbo
 import priceImage1 from "assets/img/111w57.jpg";
 import priceImage2 from "assets/img/76-11.jpg";
 import priceImage3 from "assets/img/128CP.jpg";
+import { updateLocale } from "moment";
 
 class Dashboard extends React.Component {
   state = {
     value: 0,
-    targetUnitID: 0,
+    targetUnitID: null,
     units: [],
     isOpen: false
   };
@@ -45,18 +47,22 @@ class Dashboard extends React.Component {
     this.setState({ value: index });
   };
 
-  toggleDrawer = () => {
+  toggleDrawer = (id) => {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      targetUnitID: id
     });
   };
 
   handleEdit = (id) => {
-    this.toggleDrawer(true);
+    console.log(id);
+    
     this.setState({targetUnitId: id})
+    this.toggleDrawer(id);
   };
 
   generateNewListing = () => {
+    // debugger
     console.log('Listing');
     fetch(`http://localhost:4000/units`, {
       method: 'POST',
@@ -73,78 +79,38 @@ class Dashboard extends React.Component {
   };
 
   handleSubmit = (data) => {
+    console.log(data)
+    console.log(this.state.units[this.state.targetUnitID - 1]);
+    
     fetch(`http://localhost:4000/units/${this.state.targetUnitID}`, {
       method: 'PATCH',
-      body: JSON.stringify({...data}),
+      body: JSON.stringify({name: data.listing_name, address: data.listing_address, coordinates: data.neighborhood, price: data.price, description: data.description, status: data.image}),
       headers: {
         'Content-Type': 'application/json'
       }
-    });
-  }
-
-  generateCards = () => {
-    const { classes } = this.props;
-    return this.state.units.map((idx, data) => {
-      return (
-        <GridItem key={idx} xs={12} sm={12} md={4}>
-          <Card product className={classes.cardHover}>
-            <CardHeader image className={classes.cardHeaderHover}>
-              <a onClick={e => e.preventDefault()}>
-                <img src={data.imgs[0]} alt="..." />
-              </a>
-            </CardHeader>
-            <CardBody>
-              <Tooltip
-                id="tooltip-top"
-                title="Edit"
-                placement="bottom"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <Button color="success" onClick={() => this.handleEdit(data.id)} simple justIcon>
-                  <Edit className={classes.underChartIcons} />
-                </Button>
-              </Tooltip>
-              <Tooltip
-                id="tooltip-top"
-                title="Remove"
-                placement="bottom"
-                classes={{ tooltip: classes.tooltip }}
-              >
-                <Button color="danger" simple justIcon>
-                  <Refresh className={classes.underChartIcons} />
-                </Button>
-              </Tooltip>
-              <h4 className={classes.cardProductTitle}>
-                <a href="#janice" onClick={e => e.preventDefault()}>
-                  {data.name}
-                </a>
-              </h4>
-              <p className={classes.cardProductDesciprion}>
-                {/* eslint-disable-next-line */}
-                {data.description}
-              </p>
-            </CardBody>
-            <CardFooter product>
-              <div className={classes.price}>
-                <h4>${data.price}</h4>
-              </div>
-              <div className={`${classes.stats} ${classes.productStats}`}>
-                <Place /> {data.neighborhood}
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-      );
+    }).then(() => {
+      const target = this.state.targetUnitID - 1;
+      this.setState({ 
+        isOpen: false,
+        // units: update(this.state.units, {[target]: {name: {$set: data.listing_name}}})
+      })
     });
   };
 
   componentDidMount() {
-    fetch(`http://localhost:4000/users/1`)
+    console.log('mount')
+    fetch(`http://localhost:4000/units`)
       .then(resp => resp.json())
-      .then(data => this.setState({units: data.units}))
+      .then(data => {
+        const listed_units = data.filter(unit => unit.user_id === 1);
+        this.setState({ units: listed_units });
+      });
+
   }
 
   render() {
+    console.log(this.state.targetUnitID);
+    
     const { classes } = this.props;
     return (
       <div>
@@ -154,12 +120,7 @@ class Dashboard extends React.Component {
           onClose={() => this.toggleDrawer()}
           elevation={16}
         >
-          <div
-            tabIndex={0}
-            role="button"
-            // onClick={() => this.toggleDrawer()}
-            // onKeyDown={() => this.toggleDrawer()}
-          >
+          <div tabIndex={0} role="button">
             <ListingForm handleSubmit={this.handleSubmit} />
           </div>
         </Drawer>
@@ -167,22 +128,23 @@ class Dashboard extends React.Component {
         <Button color="success" onClick={this.generateNewListing}>Create New Listing</Button>
         <br />
         <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card product className={classes.cardHover}>
-              <CardHeader image className={classes.cardHeaderHover}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  <img src={priceImage1} alt="..." />
-                </a>
-              </CardHeader>
-              <CardBody>
-                <div className={classes.cardHoverUnder}>
+          {this.state.units.map(data => {
+            console.log(data);
+            return <GridItem key={data.key} xs={12} sm={12} md={4}>
+              <Card product className={classes.cardHover}>
+                <CardHeader image className={classes.cardHeaderHover}>
+                  <a onClick={e => e.preventDefault()}>
+                    <img src={data.status} alt="..." />
+                  </a>
+                </CardHeader>
+                <CardBody>
                   <Tooltip
                     id="tooltip-top"
                     title="Edit"
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >
-                    <Button color="success" onClick={() => this.handleEdit()} simple justIcon>
+                    <Button color="success" onClick={() => this.handleEdit(data.id)} simple justIcon>
                       <Edit className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
@@ -196,145 +158,28 @@ class Dashboard extends React.Component {
                       <Refresh className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>
-                </div>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#janice" onClick={e => e.preventDefault()}>
-                    111 West 57th Street, 64 - Central Park South
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>
-                {/* eslint-disable-next-line */}
-                  This singular residence is the only simplex apartment at 111 West 57th Street to offer private outdoor space, with a 309 sq ft terrace boasting panoramic southern city skyline views. 3,873 sq ft of beautifully proportioned interior space are designed for contemporary living on a grand scale, with three bedrooms and three and a half bathrooms.
-                </p>
-              </CardBody>
-              <CardFooter product>
-                <div className={classes.price}>
-                  <h4>$30,000,000</h4>
-                </div>
-                <div className={`${classes.stats} ${classes.productStats}`}>
-                  <Place /> Midtown
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card product className={classes.cardHover}>
-              <CardHeader image className={classes.cardHeaderHover}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  <img src={priceImage2} alt="..." />
-                </a>
-              </CardHeader>
-              <CardBody>
-                <div className={classes.cardHoverUnder}>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="View"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <ArtTrack className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Edit"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="success" simple justIcon>
-                      <Refresh className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Remove"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="danger" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                </div>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    The XI, Eleventh Avenue, PH32A
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>
-                Penthouse 32A is a magnificent half floor five bedroom at No. I, one of the two Bjarke Ingels architectural masterpieces rising in vibrant West Chelsea, spanning a full city block above the Hudson River and the High Line.
-                </p>
-              </CardBody>
-              <CardFooter product>
-                <div className={classes.price}>
-                  <h4>$28,000,000</h4>
-                </div>
-                <div className={`${classes.stats} ${classes.productStats}`}>
-                  <Place /> Chelsea
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
-            <Card product className={classes.cardHover}>
-              <CardHeader image className={classes.cardHeaderHover}>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  <img src={priceImage3} alt="..." />
-                </a>
-              </CardHeader>
-              <CardBody>
-                <div className={classes.cardHoverUnder}>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="View"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="transparent" simple justIcon>
-                      <ArtTrack className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Edit"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="success" simple justIcon>
-                      <Refresh className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip
-                    id="tooltip-top"
-                    title="Remove"
-                    placement="bottom"
-                    classes={{ tooltip: classes.tooltip }}
-                  >
-                    <Button color="danger" simple justIcon>
-                      <Edit className={classes.underChartIcons} />
-                    </Button>
-                  </Tooltip>
-                </div>
-                <h4 className={classes.cardProductTitle}>
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
-                    128 Central Park South, PH
-                  </a>
-                </h4>
-                <p className={classes.cardProductDesciprion}>
-                Rare opportunity to own a spectacularly renovated 3,000 square feet penthouse on Central Park South with 100 feet of park frontage and three terraces total 3,000 square feet overlooking Central Park.
-                </p>
-              </CardBody>
-              <CardFooter product>
-                <div className={classes.price}>
-                  <h4>$18,000,000</h4>
-                </div>
-                <div className={`${classes.stats} ${classes.productStats}`}>
-                  <Place /> Midtown
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
+                  <h4 className={classes.cardProductTitle}>
+                    <a href="#janice" onClick={e => e.preventDefault()}>
+                      {data.name}
+                    </a>
+                  </h4>
+                  <p className={classes.cardProductDesciprion}>
+                    {/* eslint-disable-next-line */}
+                    {data.description}
+                  </p>
+                </CardBody>
+                <CardFooter product>
+                  <div className={classes.price}>
+                    <h4>${data.price}</h4>
+                  </div>
+                  <div className={`${classes.stats} ${classes.productStats}`}>
+                    <Place /> {data.coordinates}
+                  </div>
+                </CardFooter>
+              </Card>
+            </GridItem>
+            })
+          }
         </GridContainer>
       </div>
     );

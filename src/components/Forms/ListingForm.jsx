@@ -24,16 +24,25 @@ import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/reg
 class ListingForm extends Component {
 
   state = {
-    name: "",
-    address: "",
+    listing_name: "",
+    listing_address: "",
     neighborhood: "",
     price: "",
-    cc: "",
+    common_charges: "",
     description: ""
   };
 
+  handleChange = (event) => {
+    let name = event.target.id;
+    this.setState({[event.target.id]: event.target.value});
+    console.log(this.state.listing_address);
+    
+  };
+
+
   render() {
     const { classes } = this.props;
+    this.handleChange = this.handleChange.bind(this);
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
@@ -53,7 +62,10 @@ class ListingForm extends Component {
               <h4 className={classes.cardIconTitle}>Listing Information</h4>
             </CardHeader>
             <CardBody>
-              <form onSubmit={classes.handleSubmit}>
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                this.props.handleSubmit(this.state)
+              }}>
                 <CustomInput
                   labelText="Listing Name"
                   id="listing_name"
@@ -61,6 +73,7 @@ class ListingForm extends Component {
                     fullWidth: true
                   }}
                   inputProps={{
+                    onChange: this.handleChange,
                     type: "listing_name"
                   }}
                 />
@@ -71,6 +84,7 @@ class ListingForm extends Component {
                     fullWidth: true
                   }}
                   inputProps={{
+                    onChange: this.handleChange,
                     type: "listing_address"
                   }}
                 />
@@ -81,6 +95,7 @@ class ListingForm extends Component {
                     fullWidth: true
                   }}
                   inputProps={{
+                    onChange: this.handleChange,
                     type: "neighborhood"
                   }}
                 />
@@ -91,17 +106,20 @@ class ListingForm extends Component {
                     fullWidth: true
                   }}
                   inputProps={{
-                    type: "float"
+                    onChange: this.handleChange,
+                    type: "number",
+                    step: "0.01"
                   }}
                 />
                 <CustomInput
-                  labelText="Common Charges"
-                  id="common_charges"
+                  labelText="Image"
+                  id="image"
                   formControlProps={{
                     fullWidth: true
                   }}
                   inputProps={{
-                    type: "common_charges"
+                    onChange: this.handleChange,
+                    type: "text"
                   }}
                 />
                 <CustomInput
@@ -111,6 +129,7 @@ class ListingForm extends Component {
                     fullWidth: true
                   }}
                   inputProps={{
+                    onChange: this.handleChange,
                     type: "description",
                     multiline: true
                   }}
