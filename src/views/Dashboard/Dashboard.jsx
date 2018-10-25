@@ -61,12 +61,19 @@ class Dashboard extends React.Component {
     this.toggleDrawer(id);
   };
 
+  handleRemove = (id) => {
+    fetch(`http://localhost:4000/units/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => window.location.reload())
+  }
+
   generateNewListing = () => {
-    // debugger
-    console.log('Listing');
     fetch(`http://localhost:4000/units`, {
       method: 'POST',
-      body: JSON.stringify({user_id:1, status:'sale', active:true}),
+      body: JSON.stringify({user_id:1, images: 'stuff', active:true}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -89,11 +96,11 @@ class Dashboard extends React.Component {
         'Content-Type': 'application/json'
       }
     }).then(() => {
-      const target = this.state.targetUnitID - 1;
-      this.setState({ 
-        isOpen: false,
-        // units: update(this.state.units, {[target]: {name: {$set: data.listing_name}}})
-      })
+        window.location.reload();
+      // this.setState({ 
+      //   isOpen: false,
+      //   units: newUnits
+      // })
     });
   };
 
@@ -107,7 +114,6 @@ class Dashboard extends React.Component {
       });
 
   }
-
   render() {
     console.log(this.state.targetUnitID);
     
@@ -154,7 +160,7 @@ class Dashboard extends React.Component {
                     placement="bottom"
                     classes={{ tooltip: classes.tooltip }}
                   >
-                    <Button color="danger" simple justIcon>
+                    <Button color="danger" onClick={() => this.handleRemove(data.id)} simple justIcon>
                       <Refresh className={classes.underChartIcons} />
                     </Button>
                   </Tooltip>

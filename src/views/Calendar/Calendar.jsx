@@ -83,10 +83,7 @@ class Calendar extends React.Component {
   render() {
     return (
       <div>
-        <Heading
-          textAlign="center"
-          title="Skylines Calendar"
-        />
+        <Heading textAlign="center" title="Skylines Calendar" />
         {this.state.alert}
         <GridContainer height="100%" justify="center">
           <GridItem xs={12} sm={12} md={10}>
@@ -96,12 +93,13 @@ class Calendar extends React.Component {
                   selectable
                   localizer={localizer}
                   events={this.state.events}
-                  defaultView="month"
+                  defaultView={BigCalendar.Views.WEEK}
                   scrollToTime={new Date(1970, 1, 1, 6)}
                   defaultDate={new Date()}
                   onSelectEvent={event => this.selectedEvent(event)}
                   onSelectSlot={slotInfo => this.addNewEventAlert(slotInfo)}
                   eventPropGetter={this.eventColors}
+                  style={{ height: "80vh" }}
                 />
               </CardBody>
             </Card>

@@ -10,7 +10,6 @@ import Image from "@material-ui/icons/Image";
 
 // import ContentPaste from "@material-ui/icons/ContentPaste";
 
-
 var pages = [
   {
     path: "/user-page",
