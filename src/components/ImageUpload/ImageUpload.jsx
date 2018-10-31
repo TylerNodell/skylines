@@ -69,7 +69,8 @@ class ImageUpload extends React.Component {
     } = this.props;
     const imgStyle = {
       width: '75%',
-      height: '50%'
+      height: '500px',
+      maxWidth: '100% !important'
     };
     return (
       <div className="fileinput text-center">

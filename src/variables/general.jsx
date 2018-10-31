@@ -1,15 +1,6 @@
-import React from "react";
+// import React from "react";
 
 // @material-ui/icons
-import CardTravel from "@material-ui/icons/CardTravel";
-import Extension from "@material-ui/icons/Extension";
-import Fingerprint from "@material-ui/icons/Fingerprint";
-import FlightLand from "@material-ui/icons/FlightLand";
-import Build from "@material-ui/icons/Build";
-
-// core components
-import CustomDropdown from "components/CustomDropdown/CustomDropdown.jsx";
-
 
 // ##############################
 // // // data for populating the calendar in Calendar view

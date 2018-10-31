@@ -41,7 +41,7 @@ class Calendar extends React.Component {
           input
           showCancel
           style={{ display: "block", marginTop: "-100px" }}
-          title="Input something"
+          title="Please Enter Your Name:"
           onConfirm={e => this.addNewEvent(e, slotInfo)}
           onCancel={() => this.hideAlert()}
           confirmBtnCssClass={

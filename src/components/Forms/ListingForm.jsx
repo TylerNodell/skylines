@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 // import FormLabel from "@material-ui/core/FormLabel";
@@ -13,7 +13,6 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
-import Carousel from "components/Carousel/ReactCarousel.jsx";
 // import CardText from "components/Card/CardText.jsx";
 // import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
@@ -22,7 +21,6 @@ import ImageUpload from "components/ImageUpload/ImageUpload.jsx";
 import regularFormsStyle from "assets/jss/material-dashboard-pro-react/views/regularFormsStyle";
 
 class ListingForm extends Component {
-
   state = {
     listing_name: "",
     listing_address: "",
@@ -32,13 +30,10 @@ class ListingForm extends Component {
     description: ""
   };
 
-  handleChange = (event) => {
-    let name = event.target.id;
-    this.setState({[event.target.id]: event.target.value});
+  handleChange = event => {
+    this.setState({ [event.target.id]: event.target.value });
     console.log(this.state.listing_address);
-    
   };
-
 
   render() {
     const { classes } = this.props;
@@ -48,11 +43,12 @@ class ListingForm extends Component {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             {/* <CardHeader> */}
-              <ImageUpload
-                addButtonProps={{ round: true }}
-                changeButtonProps={{ round: true }}
-                removeButtonProps={{ round: true, color: "success" }}
-              />
+            <ImageUpload
+              styles={{ height: "650px" }}
+              addButtonProps={{ round: true }}
+              changeButtonProps={{ round: true }}
+              removeButtonProps={{ round: true, color: "success" }}
+            />
             {/* </CardHeader> */}
           </Card>
         </GridItem>
@@ -62,10 +58,12 @@ class ListingForm extends Component {
               <h4 className={classes.cardIconTitle}>Listing Information</h4>
             </CardHeader>
             <CardBody>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                this.props.handleSubmit(this.state)
-              }}>
+              <form
+                onSubmit={e => {
+                  e.preventDefault();
+                  this.props.handleSubmit(this.state);
+                }}
+              >
                 <CustomInput
                   labelText="Listing Name"
                   id="listing_name"
@@ -134,7 +132,9 @@ class ListingForm extends Component {
                     multiline: true
                   }}
                 />
-                <Button type="submit" color="rose">Submit</Button>
+                <Button type="submit" color="rose">
+                  Submit
+                </Button>
               </form>
             </CardBody>
           </Card>

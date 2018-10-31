@@ -17,11 +17,7 @@ import "react-big-calendar/lib/less/styles.less";
 
 // import GoogleMapReact from "google-map-react";
 
-import { stories } from "variables/general.jsx";
 
-import priceImage1 from "assets/img/111w57.jpg";
-import priceImage2 from "assets/img/76-11.jpg";
-import priceImage3 from "assets/img/128CP.jpg";
 
 import registerPageStyle from "assets/jss/material-dashboard-pro-react/views/registerPageStyle";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import update from 'react-addons-update';
+// import update from 'react-addons-update';
 // react plugin for creating charts
 
 // @material-ui/core components
@@ -12,7 +12,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Refresh from "@material-ui/icons/Refresh";
 import Edit from "@material-ui/icons/Edit";
 import Place from "@material-ui/icons/Place";
-import ArtTrack from "@material-ui/icons/ArtTrack";
+// import ArtTrack from "@material-ui/icons/ArtTrack";
 
 // core components
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -28,10 +28,10 @@ import ListingForm from "components/Forms/ListingForm.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-pro-react/views/dashboardStyle";
 
-import priceImage1 from "assets/img/111w57.jpg";
-import priceImage2 from "assets/img/76-11.jpg";
-import priceImage3 from "assets/img/128CP.jpg";
-import { updateLocale } from "moment";
+// import priceImage1 from "assets/img/111w57.jpg";
+// import priceImage2 from "assets/img/76-11.jpg";
+// import priceImage3 from "assets/img/128CP.jpg";
+// import { updateLocale } from "moment";
 
 class Dashboard extends React.Component {
   state = {

@@ -99,7 +99,8 @@ class LoginPage extends React.Component {
                         <InputAdornment position="end">
                           <Face className={classes.inputAdornmentIcon} />
                         </InputAdornment>
-                      )
+                      ),
+                      value: "Janice Chang"
                     }}
                   />
                   <CustomInput
@@ -113,7 +114,8 @@ class LoginPage extends React.Component {
                         <InputAdornment position="end">
                           <Email className={classes.inputAdornmentIcon} />
                         </InputAdornment>
-                      )
+                      ),
+                      value: "jchang@elliman.com"
                     }}
                   />
                   <CustomInput
@@ -129,7 +131,9 @@ class LoginPage extends React.Component {
                             lock_outline
                           </Icon>
                         </InputAdornment>
-                      )
+                      ),
+                      value: "****************",
+                      password: true
                     }}
                   />
                 </CardBody>
